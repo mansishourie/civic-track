@@ -8,8 +8,10 @@
 </head>
 <body>
 
-<div class="toast" id="toast">
-    <span class="toast-icon">✅</span>
+  <div class="confetti-wrap" id="confettiWrap"></div>
+
+  <div class="toast" id="toast">
+    <span class="toast-icon">🎉</span>
     <div>
       <h5>Account Created!</h5>
       <p>Welcome to CivicTrack, <span id="toast-name">there</span>!</p>
@@ -37,6 +39,7 @@
 
   <!-- WELCOME HERO -->
   <div class="welcome-hero">
+    <span class="welcome-emoji">🎊</span>
     <div class="new-badge">✨ New Member</div>
     <h1>Welcome to <span>CivicTrack</span>, <span id="hero-name">there</span>!</h1>
     <p>Your account is all set. You're now part of a community making cities cleaner and smarter — one complaint at a time.</p>
@@ -66,7 +69,7 @@
 
       <div class="onboard-card completed">
         <div class="step-number">1</div>
-        <span class="onboard-icon">✅</span>
+        <span class="onboard-icon">🎉</span>
         <h3>Create Your Account</h3>
         <p>You've successfully signed up and joined CivicTrack. Your journey starts here!</p>
         <span class="onboard-btn btn-done">✓ Completed</span>
@@ -91,9 +94,9 @@
       <div class="onboard-card" id="card-water">
         <div class="step-number">4</div>
         <span class="onboard-icon">💧</span>
-        <h3>Connect Your Water Meter</h3>
-        <p>Link your water meter to monitor monthly consumption and avoid penalties before they're issued.</p>
-        <a href="newwater.html" class="onboard-btn btn-blue" onclick="markDone('card-water', this)">Connect Meter →</a>
+        <h3>Check Water Usage</h3>
+        <p>Monitor your monthly water consumption and avoid penalties before they're issued.</p>
+        <a href="newwater.html" class="onboard-btn btn-blue" onclick="markDone('card-water', this)">View Water Usage →</a>
       </div>
 
     </div>
@@ -118,6 +121,24 @@
       </div>
     </div>
 
+    <p class="section-title">💧 Your Water Usage — March 2025</p>
+    <div class="water-preview">
+      <div class="water-preview-header">
+        <h3>Household Water Consumption</h3>
+        <span style="font-size:12px;color:#7A8BAA;">Ward 12, Mumbai</span>
+      </div>
+      <div class="water-preview-body">
+        <div class="water-info-row">
+          <div class="water-info-box"><div class="wib-num" style="color:#16C784;">80L</div><div class="wib-label">Used So Far</div></div>
+          <div class="water-info-box"><div class="wib-num">200L</div><div class="wib-label">Monthly Limit</div></div>
+          <div class="water-info-box"><div class="wib-num" style="color:#00C8FF;">120L</div><div class="wib-label">Remaining</div></div>
+        </div>
+        <div class="water-bar-label"><span>0L</span><span style="color:#16C784;">80L used (40%)</span><span>200L limit</span></div>
+        <div class="water-bar-track"><div class="water-bar-fill"></div></div>
+        <div class="water-safe-note">✅ <strong>You're well within the safe limit!</strong> Keep it up to avoid penalties.</div>
+      </div>
+    </div>
+
     <p class="section-title">🗂️ My Complaints</p>
     <div class="empty-state">
       <span class="empty-icon">📋</span>
@@ -130,7 +151,7 @@
     <div class="tips-grid">
       <div class="tip-card"><span class="tip-icon">📸</span><h4>Always attach a photo</h4><p>Complaints with photos are resolved 2x faster. Even a blurry photo from your phone helps authorities confirm the issue.</p><span class="tip-saving">⚡ 2× faster resolution</span></div>
       <div class="tip-card"><span class="tip-icon">📍</span><h4>Be specific with location</h4><p>Mention a nearby landmark — "near the red gate of Sector 12 park" works better than just the street name.</p><span class="tip-saving">📍 Helps teams find it fast</span></div>
-      <div class="tip-card"><span class="tip-icon">💧</span><h4>Connect your water meter</h4><p>Link your meter to track monthly usage. Going over 300L triggers a fine — stay in the safe zone by monitoring early.</p><span class="tip-saving">💰 Avoid ₹200–₹700 penalty</span></div>
+      <div class="tip-card"><span class="tip-icon">💧</span><h4>Monitor water monthly</h4><p>Check your water usage before the end of each month. Going over 300L triggers a fine — stay in the safe zone.</p><span class="tip-saving">💰 Avoid ₹200–₹700 penalty</span></div>
     </div>
 
     <p class="section-title">🌐 What's Happening in Your Area</p>
@@ -165,61 +186,64 @@
       window.location.href = 'user_login.html';
     }
 
+    function launchConfetti() {
+      var wrap = document.getElementById("confettiWrap");
+      var colors = ["#2B7FFF","#00C8FF","#16C784","#F59E0B","#EF4444","#A78BFA"];
+      for (var i = 0; i < 60; i++) {
+        var piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.top  = "-20px";
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (2 + Math.random() * 2) + "s";
+        piece.style.animationDelay   = (Math.random() * 1.5) + "s";
+        piece.style.width  = (8 + Math.random() * 8) + "px";
+        piece.style.height = (8 + Math.random() * 8) + "px";
+        piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+        wrap.appendChild(piece);
+      }
+      setTimeout(function() { wrap.innerHTML = ""; }, 5000);
+    }
+
     function showToast() {
       var toast = document.getElementById("toast");
       toast.classList.add("show");
       setTimeout(function() { toast.classList.remove("show"); }, 4000);
     }
 
-    // Map each card to its sessionStorage key
-    var cardKeys = {
-      'card-complaint': 'done_complaint',
-      'card-track':     'done_track',
-      'card-water':     'done_meter'
-    };
-
-    function applyDone(cardId) {
-      var card = document.getElementById(cardId);
-      if (!card) return;
-      card.classList.add("completed");
-      var btn = card.querySelector('a.onboard-btn');
-      if (btn) {
-        btn.className = "onboard-btn btn-done";
-        btn.removeAttribute('href');
-        btn.onclick = null;
-        btn.innerHTML = "✓ Done";
-      }
-    }
-
-    function updateProgress() {
-      var completedCount = 1; // account creation always done
-      Object.keys(cardKeys).forEach(function(cardId) {
-        if (sessionStorage.getItem(cardKeys[cardId]) === 'true') completedCount++;
-      });
-      var percent = Math.min(Math.round((completedCount / 4) * 100), 100);
-      document.getElementById("profile-percent").innerHTML = percent + "%";
-    }
+    var completedCount = 1;
 
     function markDone(cardId, btn) {
-      sessionStorage.setItem(cardKeys[cardId], 'true');
-      applyDone(cardId);
-      updateProgress();
+      var card = document.getElementById(cardId);
+      if (card) {
+        card.classList.add("completed");
+        btn.className  = "onboard-btn btn-done";
+        btn.innerHTML  = "✓ Done";
+        completedCount++;
+        var percent = Math.min(Math.round((completedCount / 4) * 100), 100);
+        document.getElementById("profile-percent").innerHTML = percent + "%";
+      }
     }
 
-    // On page load, restore any previously completed steps
-    Object.keys(cardKeys).forEach(function(cardId) {
-      if (sessionStorage.getItem(cardKeys[cardId]) === 'true') {
-        applyDone(cardId);
-      }
-    });
-    updateProgress();
-
-    // Also restore tick if returning from report/track/meter pages
-    // These pages should set the sessionStorage key before navigating back
-    // e.g. report.html sets sessionStorage.setItem('done_complaint', 'true')
-
+    launchConfetti();
     setTimeout(showToast, 800);
   </script>
+  <!-- This page is basically a **welcome dashboard for a new user**, and all the JavaScript is used to make it feel *personal, interactive, and alive* instead of static.
+
+When the page loads, the first thing JavaScript does is read the user’s name from `sessionStorage`. This is the same data you saved during signup. It takes that name, extracts the first name, and inserts it into different parts of the page like the header, hero section, and welcome toast. That’s why instead of showing “User” or “there”, it shows the actual name of the person who signed up.
+
+Then there is the `logout()` function, which simply clears all stored user data from `sessionStorage` and redirects the user back to the login page. So this is how login/logout flow is handled without any backend.
+
+Next comes the **confetti animation**, which runs automatically when the page loads. The `launchConfetti()` function creates small div elements dynamically using `document.createElement`, assigns them random colors, sizes, positions, and animation timings, and adds them to the page. This creates the falling confetti effect you see. After 5 seconds, all confetti is removed to clean up the UI.
+
+After that, the `showToast()` function displays the small “Account Created” popup. It works by adding a CSS class (`show`) to make the toast visible, and then removes it after a few seconds using `setTimeout`, so it disappears automatically.
+
+The onboarding section (those 4 cards) is controlled by the `markDone()` function. Whenever the user clicks on actions like “File Complaint” or “Track Complaint”, this function marks that card as completed by changing its style and button text. It also increases a counter (`completedCount`) and updates the profile completion percentage dynamically. So the progress (30%, 50%, etc.) is not fixed—it changes based on user interaction.
+
+Finally, at the bottom of the script, two functions are called automatically: `launchConfetti()` runs immediately to show celebration, and `showToast()` runs after a short delay to greet the user.
+
+In simple terms, **this page uses Vanilla JavaScript with sessionStorage and DOM manipulation to personalize the user’s experience, simulate onboarding progress, and add UI effects like confetti and toast notifications without any backend or framework.**
+ This page is built using Vanilla JavaScript with browser APIs like sessionStorage. No frameworks or external libraries are used-->
 
 </body>
 </html>
